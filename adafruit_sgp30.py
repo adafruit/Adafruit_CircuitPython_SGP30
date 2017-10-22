@@ -33,57 +33,69 @@ import time
 SGP30_DEFAULT_I2C_ADDR  = const(0x58)
 SGP30_FEATURESET        = const(0x0020)
 
-SGP30_COMMAND_SERIALID  = const(0x3682)
-SGP30_COMMAND_FEATURESET = const(0x202f)
 SGP30_CRC8_POLYNOMIAL   = const(0x31)
 SGP30_CRC8_INIT         = const(0xFF)
 SGP30_WORD_LEN          = const(2)
 
 class Adafruit_SGP30: 
     def __init__(self, i2c, address=SGP30_DEFAULT_I2C_ADDR):
+        """Initialize the sensor, get the serial # and verify that we found a proper SGP30"""
         self._device = I2CDevice(i2c, address)
 
         # get unique serial, its 48 bits so we store in an array
-        self._serial = self.sgp_i2c_read_words_from_cmd(SGP30_COMMAND_SERIALID, 0.01, 3)
-        print("Serial: ", [hex(i) for i in self._serial])
+        self._serial = self.sgp_i2c_read_words_from_cmd([0x36, 0x82], 0.01, 3)
         # get featuerset
-        featureset = self.sgp_i2c_read_words_from_cmd(SGP30_COMMAND_FEATURESET, 0.01, 1)
+        featureset = self.sgp_i2c_read_words_from_cmd([0x20, 0x2f], 0.01, 1)
         if featureset[0] != SGP30_FEATURESET:
             raise RuntimeError('SGP30 Not detected')
         self.sgp_iaq_init()
         
     def sgp_iaq_init(self):
-        self.sgp_run_profile(["iaq_init", 0x2003, 0, 0.01])        # name, command, signals, delay
+        """Initialize the IAQ algorithm"""
+        # name, command, signals, delay
+        self.sgp_run_profile(["iaq_init", [0x20, 0x03], 0, 0.01])
 
     def sgp_iaq_measure(self):
-        return self.sgp_run_profile(["iaq_measure", 0x2008, 2, 0.05])     # name, command, signals, delay
+        """Measure the CO2eq and TVOC"""
+        # name, command, signals, delay
+        return self.sgp_run_profile(["iaq_measure", [0x20, 0x08], 2, 0.05])
 
+    def sgp_get_iaq_baseline(self):
+        """Retreive the IAQ algorithm baseline for CO2eq and TVOC"""
+        # name, command, signals, delay
+        return self.sgp_run_profile(["iaq_get_baseline", [0x20, 0x15], 2, 0.01])
+
+
+    def sgp_set_iaq_baseline(self, co2eq, tvoc):
+        if co2eq == 0 and tvoc == 0:
+            raise RuntimeError('Invalid baseline')
+        buffer = []
+        for v in [tvoc, co2eq]:
+            arr = [v >> 8, v & 0xFF]
+            arr.append(self.sensirion_common_generate_crc(arr))
+            buffer += arr
+        self.sgp_run_profile(["iaq_set_baseline", [0x20, 0x1e] + buffer, 0, 0.01]) 
+
+
+    # Low level command functions
+    
     def sgp_run_profile(self, profile):
+        """Run an SGP 'profile' which is a named command set"""
         name, command, signals, delay = profile
-        print("running profile: %s, command 0x%x, %d, delay %f" % (name, command, signals, delay))
+        #print("\trunning profile: %s, command %s, %d, delay %0.02f" % (name, ["0x%02x" % i for i in command], signals, delay))
         return self.sgp_i2c_read_words_from_cmd(command, delay, signals)
 
-        """        
-        with self._device:
-            self._device.write(bytes([(command >> 8) & 0xFF,
-                                      command & 0xFF]))
-            time.sleep(delay)
-            if signals > 0:
-                crc_result = bytearray(signals)
-                self._device.read_into(crc_result)
-                print("\tRaw Read: ", crc_result)
-        """
 
     def sgp_i2c_read_words_from_cmd(self, command, delay, reply_size):
+        """Run an SGP command query, get a reply and CRC results if necessary"""
         with self._device:
-            self._device.write(bytes([(command >> 8) & 0xFF,
-                                      command & 0xFF]))
+            self._device.write(bytes(command))
             time.sleep(delay)
             if not reply_size:
                 return None
             crc_result = bytearray(reply_size * (SGP30_WORD_LEN +1))
             self._device.read_into(crc_result)
-            print("\tRaw Read: ", crc_result)
+            #print("\tRaw Read: ", crc_result)
             result = []
             for i in range(reply_size):
                 word = [crc_result[3*i], crc_result[3*i+1]]
@@ -91,10 +103,11 @@ class Adafruit_SGP30:
                 if self.sensirion_common_generate_crc(word) != crc:
                     raise RuntimeError('CRC Error')
                 result.append(word[0] << 8 | word[1])
-            print("\tOK Data: ", [hex(i) for i in result])
+            #print("\tOK Data: ", [hex(i) for i in result])
             return result
 
     def sensirion_common_generate_crc(self, data):
+        """8-bit CRC algorithm for checking data"""
         crc = SGP30_CRC8_INIT
         # calculates 8-Bit checksum with given polynomial
         for byte in data:
