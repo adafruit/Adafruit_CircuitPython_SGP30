@@ -10,7 +10,7 @@ Introduction
     :target: https://discord.gg/nBQh6qu
     :alt: Discord
 
-TODO
+This is a CircuitPython driver for the Sensirion SGP30 air quality sensor, it can provide CO2eq (equivalent CO2) and TVOC (Total Volatile Organic Compounds) with a simple I2C interface 
 
 Dependencies
 =============
@@ -26,7 +26,25 @@ This is easily achieved by downloading
 Usage Example
 =============
 
-TODO
+```
+import board
+import busio
+import time
+import adafruit_sgp30
+
+i2c = busio.I2C(board.SCL, board.SDA, frequency=100000)
+ 
+# Create library object on our I2C port
+sgp30 = adafruit_sgp30.Adafruit_SGP30(i2c)
+ 
+print("SGP30 serial #", [hex(i) for i in sgp30._serial])
+
+sgp30.sgp_iaq_init()
+while True:
+    co2eq, tvoc = sgp30.sgp_iaq_measure()
+    print("CO2eq = %d ppm \t TVOC = %d ppb" % (co2eq, tvoc))
+    time.sleep(1)
+```
 
 Contributing
 ============
