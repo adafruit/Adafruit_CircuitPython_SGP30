@@ -26,7 +26,8 @@ This is easily achieved by downloading
 Usage Example
 =============
 
-```
+.. code:: python
+
 import board
 import busio
 import time
@@ -44,7 +45,6 @@ while True:
     co2eq, tvoc = sgp30.sgp_iaq_measure()
     print("CO2eq = %d ppm \t TVOC = %d ppb" % (co2eq, tvoc))
     time.sleep(1)
-```
 
 Contributing
 ============
