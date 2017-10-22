@@ -67,6 +67,7 @@ class Adafruit_SGP30:
 
 
     def sgp_set_iaq_baseline(self, co2eq, tvoc):
+        """Set the previously recorded IAQ algorithm baseline for CO2eq and TVOC"""
         if co2eq == 0 and tvoc == 0:
             raise RuntimeError('Invalid baseline')
         buffer = []
