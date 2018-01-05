@@ -15,6 +15,11 @@ extensions = [
     'sphinx.ext.viewcode',
 ]
 
+# Uncomment the below if you use native CircuitPython modules such as
+# digitalio, micropython and busio. List the modules you use. Without it, the
+# autodoc module docs will fail to generate with a warning.
+# autodoc_mock_imports = ["digitalio", "busio"]
+
 intersphinx_mapping = {'python': ('https://docs.python.org/3.4', None),'BusDevice': ('https://circuitpython.readthedocs.io/projects/bus_device/en/latest/', None),'CircuitPython': ('https://circuitpython.readthedocs.io/en/latest/', None)}
 
 # Add any paths that contain templates here, relative to this directory.
@@ -26,9 +31,9 @@ source_suffix = '.rst'
 master_doc = 'README'
 
 # General information about the project.
-project = u'Adafruit ADAFRUIT_SGP30 Library'
-copyright = u'2017 ladyada'
-author = u'ladyada'
+project = u'Adafruit sgp30 Library'
+copyright = u'2017 Ladyada'
+author = u'Ladyada'
 
 # The version info for the project you're documenting, acts as replacement for
 # |version| and |release|, also used in various other places throughout the
@@ -91,7 +96,7 @@ else:
 html_static_path = ['_static']
 
 # Output file base name for HTML help builder.
-htmlhelp_basename = 'AdafruitADAFRUIT_SGP30Librarydoc'
+htmlhelp_basename = 'AdafruitSgp30Librarydoc'
 
 # -- Options for LaTeX output ---------------------------------------------
 
@@ -117,7 +122,7 @@ latex_elements = {
 # (source start file, target name, title,
 #  author, documentclass [howto, manual, or own class]).
 latex_documents = [
-    (master_doc, 'AdafruitADAFRUIT_SGP30Library.tex', u'Adafruit ADAFRUIT_SGP30 Library Documentation',
+    (master_doc, 'Adafruitsgp30Library.tex', u'Adafruitsgp30 Library Documentation',
      author, 'manual'),
 ]
 
@@ -126,7 +131,7 @@ latex_documents = [
 # One entry per manual page. List of tuples
 # (source start file, name, description, authors, manual section).
 man_pages = [
-    (master_doc, 'adafruitADAFRUIT_SGP30library', u'Adafruit ADAFRUIT_SGP30 Library Documentation',
+    (master_doc, 'Adafruitsgp30library', u'Adafruit sgp30 Library Documentation',
      [author], 1)
 ]
 
@@ -136,7 +141,7 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'AdafruitADAFRUIT_SGP30Library', u'Adafruit ADAFRUIT_SGP30 Library Documentation',
-     author, 'AdafruitADAFRUIT_SGP30Library', 'One line description of project.',
+    (master_doc, 'Adafruitsgp30Library', u'Adafruit sgp30 Library Documentation',
+     author, 'Adafruitsgp30Library', 'One line description of project.',
      'Miscellaneous'),
 ]
