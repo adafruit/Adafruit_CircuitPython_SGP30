@@ -54,7 +54,7 @@ class Adafruit_SGP30:
         self._device = I2CDevice(i2c, address)
 
         # get unique serial, its 48 bits so we store in an array
-        self._serial = self._i2c_read_words_from_cmd([0x36, 0x82], 0.01, 3)
+        self.serial = self._i2c_read_words_from_cmd([0x36, 0x82], 0.01, 3)
         # get featuerset
         featureset = self._i2c_read_words_from_cmd([0x20, 0x2f], 0.01, 1)
         if featureset[0] != _SGP30_FEATURESET:
