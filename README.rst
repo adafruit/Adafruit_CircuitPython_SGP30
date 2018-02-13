@@ -3,9 +3,7 @@ Introduction
 ============
 
 .. image:: https://readthedocs.org/projects/adafruit-circuitpython-sgp30/badge/?version=latest
-
     :target: https://circuitpython.readthedocs.io/projects/sgp30/en/latest/
-
     :alt: Documentation Status
 
 .. image :: https://img.shields.io/discord/327254708534116352.svg
