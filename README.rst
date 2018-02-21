@@ -23,10 +23,38 @@ Please ensure all dependencies are available on the CircuitPython filesystem.
 This is easily achieved by downloading
 `the Adafruit library and driver bundle <https://github.com/adafruit/Adafruit_CircuitPython_Bundle>`_.
 
-Usage Example
+Usage Notes
 =============
 
-TODO
+See `the guide <https://learn.adafruit.com/adafruit-sgp30-gas-tvoc-eco2-mox-sensor/circuitpython-wiring-test>`_
+for wiring and installation instructions.
+
+First, import the library:
+
+.. code:: python
+    import busio
+    import adafruit_sgp30
+
+Next, initialize the I2C bus object:
+
+.. code:: python
+    from board import *
+    i2c_bus = busio.I2C(board.SCL, board.SDA, frequency=100000)
+
+Since we have the I2C bus object, we can now use it to instantiate the SGP30 object:
+
+.. code:: python
+    sgp30 = adafruit_sgp30.Adafruit_SGP30(i2c_bus)
+
+Reading from the Sensor
+--------------
+
+To read from the sensor:
+
+.. code:: python
+    co2eq, tvoc = sgp30.iaq_measure()
+    print("CO2eq = %d ppm \t TVOC = %d ppb" % (co2eq, tvoc))
+
 
 API Reference
 =============
