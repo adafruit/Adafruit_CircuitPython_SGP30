@@ -31,19 +31,22 @@ for wiring and installation instructions.
 
 First, import the library:
 
-.. code:: python
+.. code-block:: python
+
     import busio
     import adafruit_sgp30
 
 Next, initialize the I2C bus object:
 
-.. code:: python
+.. code-block:: python
+
     from board import *
     i2c_bus = busio.I2C(board.SCL, board.SDA, frequency=100000)
 
 Since we have the I2C bus object, we can now use it to instantiate the SGP30 object:
 
-.. code:: python
+.. code-block:: python
+
     sgp30 = adafruit_sgp30.Adafruit_SGP30(i2c_bus)
 
 Reading from the Sensor
@@ -51,7 +54,8 @@ Reading from the Sensor
 
 To read from the sensor:
 
-.. code:: python
+.. code-block:: python
+
     co2eq, tvoc = sgp30.iaq_measure()
     print("CO2eq = %d ppm \t TVOC = %d ppb" % (co2eq, tvoc))
 
