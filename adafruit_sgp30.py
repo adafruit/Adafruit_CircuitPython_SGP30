@@ -32,7 +32,7 @@ Implementation Notes
 
 **Hardware:**
 
-* Adafruit `SGP30 Air Quality Sensor Breakout - VOC and eCO2 
+* Adafruit `SGP30 Air Quality Sensor Breakout - VOC and eCO2
   <https://www.adafruit.com/product/3709>`_ (Product ID: 3709)
 
 **Software and Dependencies:**
