@@ -26,6 +26,20 @@
 I2C driver for SGP30 Sensirion VoC sensor
 
 * Author(s): ladyada
+
+Implementation Notes
+--------------------
+
+**Hardware:**
+
+* Adafruit `SGP30 Air Quality Sensor Breakout - VOC and eCO2 
+  <https://www.adafruit.com/product/3709>`_ (Product ID: 3709)
+
+**Software and Dependencies:**
+
+* Adafruit CircuitPython firmware for the ESP8622 and M0-based boards:
+  https://github.com/adafruit/circuitpython/releases
+* Adafruit's Bus Device library: https://github.com/adafruit/Adafruit_CircuitPython_BusDevice
 """
 import time
 from adafruit_bus_device.i2c_device import I2CDevice
