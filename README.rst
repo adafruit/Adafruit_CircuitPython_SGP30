@@ -50,7 +50,7 @@ Since we have the I2C bus object, we can now use it to instantiate the SGP30 obj
     sgp30 = adafruit_sgp30.Adafruit_SGP30(i2c_bus)
 
 Reading from the Sensor
---------------
+------------------------
 
 To read from the sensor:
 
