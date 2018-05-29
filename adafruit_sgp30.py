@@ -77,8 +77,8 @@ class Adafruit_SGP30:
 
         self._co2eq = None # pylint: disable=invalid-name
         self._tvoc = None # pylint: disable=invalid-name
-        self._tvoc_base = None # pylint: disable=invalid-name
-        self._co2eq_base = None # pylint: disable=invalid-name
+        self._baseline_tvoc = None # pylint: disable=invalid-name
+        self._baseline_co2eq = None # pylint: disable=invalid-name
 
 
     @property
@@ -89,10 +89,10 @@ class Adafruit_SGP30:
 
 
     @property
-    def tvoc_base(self): #pylint: disable=invalid-name
+    def baseline_tvoc(self): #pylint: disable=invalid-name
         """Total Volatile Organic Compound baseline value"""
-        self._tvoc_base = self.get_iaq_baseline()[1]
-        return self._tvoc_base
+        self._baseline_tvoc = self.get_iaq_baseline()[1]
+        return self._baseline_tvoc
 
 
     @property
@@ -103,10 +103,11 @@ class Adafruit_SGP30:
 
 
     @property
-    def co2eq_base(self): #pylint: disable=invalid-name
+    def baseline_co2eq(self): #pylint: disable=invalid-name
         """Carbon Dioxide Equivalent baseline value"""
-        self._co2eq_base = self.get_iaq_baseline()[0]
-        return self._co2eq_base
+        self._baseline_co2eq = self.get_iaq_baseline()[0]
+        return self._baseline_co2eq
+
 
     def iaq_init(self):
         """Initialize the IAQ algorithm"""
