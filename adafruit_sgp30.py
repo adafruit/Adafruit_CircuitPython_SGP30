@@ -75,6 +75,39 @@ class Adafruit_SGP30:
             raise RuntimeError('SGP30 Not detected')
         self.iaq_init()
 
+        self._co2eq = None # pylint: disable=invalid-name
+        self._tvoc = None # pylint: disable=invalid-name
+        self._tvoc_base = None # pylint: disable=invalid-name
+        self._co2eq_base = None # pylint: disable=invalid-name
+
+
+    @property
+    def tvoc(self): # pylint: disable=invalid-name
+        """Total Volatile Organic Compound in parts per billion."""
+        self._tvoc = self.iaq_measure()[1]
+        return self._tvoc
+
+
+    @property
+    def tvoc_base(self): #pylint: disable=invalid-name
+        """Total Volatile Organic Compound baseline value"""
+        self._tvoc_base = self.get_iaq_baseline()[1]
+        return self._tvoc_base
+
+
+    @property
+    def co2eq(self): #pylint: disable=invalid-name
+        """Carbon Dioxide Equivalent in parts per million"""
+        self._co2eq = self.iaq_measure()[0]
+        return self._co2eq
+
+
+    @property
+    def co2eq_base(self): #pylint: disable=invalid-name
+        """Carbon Dioxide Equivalent baseline value"""
+        self._co2eq_base = self.get_iaq_baseline()[0]
+        return self._co2eq_base
+
     def iaq_init(self):
         """Initialize the IAQ algorithm"""
         # name, command, signals, delay
