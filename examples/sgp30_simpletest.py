@@ -18,12 +18,10 @@ sgp30.set_iaq_baseline(0x8973, 0x8aae)
 elapsed_sec = 0
 
 while True:
-    co2eq, tvoc = sgp30.iaq_measure()
     print("co2eq = %d ppm \t tvoc = %d ppb" % (sgp30.co2eq, sgp30.tvoc))
     time.sleep(1)
     elapsed_sec += 1
     if elapsed_sec > 10:
         elapsed_sec = 0
-        co2eq_base, tvoc_base = sgp30.get_iaq_baseline()
         print("**** Baseline values: co2eq = 0x%x, tvoc = 0x%x"
               % (sgp30.baseline_co2eq, sgp30.baseline_tvoc))
