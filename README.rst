@@ -44,8 +44,8 @@ Next, initialize the I2C bus object:
 
 .. code-block:: python
 
-    from board import *
-    i2c_bus = busio.I2C(SCL, SDA, frequency=100000)
+    import board
+    i2c_bus = busio.I2C(board.SCL, board.SCL, frequency=100000)
 
 Since we have the I2C bus object, we can now use it to instantiate the SGP30 object:
 
