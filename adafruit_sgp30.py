@@ -77,25 +77,29 @@ class Adafruit_SGP30:
 
 
     @property
-    def tvoc(self):
+    # pylint: disable=invalid-name
+    def TVOC(self):
         """Total Volatile Organic Compound in parts per billion."""
         return self.iaq_measure()[1]
 
 
     @property
-    def baseline_tvoc(self):
+    # pylint: disable=invalid-name
+    def baseline_TVOC(self):
         """Total Volatile Organic Compound baseline value"""
         return self.get_iaq_baseline()[1]
 
 
     @property
-    def co2eq(self):
+    # pylint: disable=invalid-name
+    def eCO2(self):
         """Carbon Dioxide Equivalent in parts per million"""
         return self.iaq_measure()[0]
 
 
     @property
-    def baseline_co2eq(self):
+    # pylint: disable=invalid-name
+    def baseline_eCO2(self):
         """Carbon Dioxide Equivalent baseline value"""
         return self.get_iaq_baseline()[0]
 
@@ -106,22 +110,21 @@ class Adafruit_SGP30:
         self._run_profile(["iaq_init", [0x20, 0x03], 0, 0.01])
 
     def iaq_measure(self):
-        """Measure the CO2eq and TVOC"""
+        """Measure the eCO2 and TVOC"""
         # name, command, signals, delay
         return self._run_profile(["iaq_measure", [0x20, 0x08], 2, 0.05])
 
     def get_iaq_baseline(self):
-        """Retreive the IAQ algorithm baseline for CO2eq and TVOC"""
+        """Retreive the IAQ algorithm baseline for eCO2 and TVOC"""
         # name, command, signals, delay
         return self._run_profile(["iaq_get_baseline", [0x20, 0x15], 2, 0.01])
 
-
-    def set_iaq_baseline(self, co2eq, tvoc):
-        """Set the previously recorded IAQ algorithm baseline for CO2eq and TVOC"""
-        if co2eq == 0 and tvoc == 0:
+    def set_iaq_baseline(self, eCO2, TVOC): # pylint: disable=invalid-name
+        """Set the previously recorded IAQ algorithm baseline for eCO2 and TVOC"""
+        if eCO2 == 0 and TVOC == 0:
             raise RuntimeError('Invalid baseline')
         buffer = []
-        for value in [tvoc, co2eq]:
+        for value in [TVOC, eCO2]:
             arr = [value >> 8, value & 0xFF]
             arr.append(self._generate_crc(arr))
             buffer += arr
