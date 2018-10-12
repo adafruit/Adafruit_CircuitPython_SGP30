@@ -60,8 +60,8 @@ To read from the sensor:
 
 .. code-block:: python
 
-    co2eq, tvoc = sgp30.iaq_measure()
-    print("CO2eq = %d ppm \t TVOC = %d ppb" % (co2eq, tvoc))
+    eCO2, TVOC = sgp30.iaq_measure()
+    print("eCO2 = %d ppm \t TVOC = %d ppb" % (eCO2, TVOC))
 
 
 Contributing
