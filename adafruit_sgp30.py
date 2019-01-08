@@ -130,6 +130,15 @@ class Adafruit_SGP30:
             buffer += arr
         self._run_profile(["iaq_set_baseline", [0x20, 0x1e] + buffer, 0, 0.01])
 
+    def set_iaq_humidity(self, rh): # pylint: disable=invalid-name
+        """Set the humidity for eCO2 and TVOC compensation algorithm"""
+        rh = int(rh * 256)
+        buffer = []
+        for value in [rh]:
+            arr = [value >> 8, value & 0xFF]
+            arr.append(self._generate_crc(arr))
+            buffer += arr
+        self._run_profile(["iaq_set_humidity", [0x20, 0x61] + buffer, 0, 0.01])
 
     # Low level command functions
 
