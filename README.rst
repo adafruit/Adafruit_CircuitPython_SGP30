@@ -10,6 +10,7 @@ Introduction
     :target: https://discord.gg/nBQh6qu
     :alt: Discord
 
+
 .. image:: https://github.com/adafruit/Adafruit_CircuitPython_SGP30/workflows/Build%20CI/badge.svg
     :target: https://github.com/adafruit/Adafruit_CircuitPython_SGP30/actions/
     :alt: Build Status
