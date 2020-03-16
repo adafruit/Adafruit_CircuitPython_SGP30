@@ -50,13 +50,14 @@ __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_SGP30.git"
 
 
 # pylint: disable=bad-whitespace
-_SGP30_DEFAULT_I2C_ADDR  = const(0x58)
-_SGP30_FEATURESETS       = (0x0020, 0x0022)
+_SGP30_DEFAULT_I2C_ADDR = const(0x58)
+_SGP30_FEATURESETS = (0x0020, 0x0022)
 
-_SGP30_CRC8_POLYNOMIAL   = const(0x31)
-_SGP30_CRC8_INIT         = const(0xFF)
-_SGP30_WORD_LEN          = const(2)
+_SGP30_CRC8_POLYNOMIAL = const(0x31)
+_SGP30_CRC8_INIT = const(0xFF)
+_SGP30_WORD_LEN = const(2)
 # pylint: enable=bad-whitespace
+
 
 class Adafruit_SGP30:
     """
@@ -70,11 +71,10 @@ class Adafruit_SGP30:
         # get unique serial, its 48 bits so we store in an array
         self.serial = self._i2c_read_words_from_cmd([0x36, 0x82], 0.01, 3)
         # get featureset
-        featureset = self._i2c_read_words_from_cmd([0x20, 0x2f], 0.01, 1)
+        featureset = self._i2c_read_words_from_cmd([0x20, 0x2F], 0.01, 1)
         if featureset[0] not in _SGP30_FEATURESETS:
-            raise RuntimeError('SGP30 Not detected')
+            raise RuntimeError("SGP30 Not detected")
         self.iaq_init()
-
 
     @property
     # pylint: disable=invalid-name
@@ -82,13 +82,11 @@ class Adafruit_SGP30:
         """Total Volatile Organic Compound in parts per billion."""
         return self.iaq_measure()[1]
 
-
     @property
     # pylint: disable=invalid-name
     def baseline_TVOC(self):
         """Total Volatile Organic Compound baseline value"""
         return self.get_iaq_baseline()[1]
-
 
     @property
     # pylint: disable=invalid-name
@@ -96,13 +94,11 @@ class Adafruit_SGP30:
         """Carbon Dioxide Equivalent in parts per million"""
         return self.iaq_measure()[0]
 
-
     @property
     # pylint: disable=invalid-name
     def baseline_eCO2(self):
         """Carbon Dioxide Equivalent baseline value"""
         return self.get_iaq_baseline()[0]
-
 
     def iaq_init(self):
         """Initialize the IAQ algorithm"""
@@ -119,18 +115,18 @@ class Adafruit_SGP30:
         # name, command, signals, delay
         return self._run_profile(["iaq_get_baseline", [0x20, 0x15], 2, 0.01])
 
-    def set_iaq_baseline(self, eCO2, TVOC): # pylint: disable=invalid-name
+    def set_iaq_baseline(self, eCO2, TVOC):  # pylint: disable=invalid-name
         """Set the previously recorded IAQ algorithm baseline for eCO2 and TVOC"""
         if eCO2 == 0 and TVOC == 0:
-            raise RuntimeError('Invalid baseline')
+            raise RuntimeError("Invalid baseline")
         buffer = []
         for value in [TVOC, eCO2]:
             arr = [value >> 8, value & 0xFF]
             arr.append(self._generate_crc(arr))
             buffer += arr
-        self._run_profile(["iaq_set_baseline", [0x20, 0x1e] + buffer, 0, 0.01])
+        self._run_profile(["iaq_set_baseline", [0x20, 0x1E] + buffer, 0, 0.01])
 
-    def set_iaq_humidity(self, gramsPM3): # pylint: disable=invalid-name
+    def set_iaq_humidity(self, gramsPM3):  # pylint: disable=invalid-name
         """Set the humidity in g/m3 for eCO2 and TVOC compensation algorithm"""
         tmp = int(gramsPM3 * 256)
         buffer = []
@@ -148,10 +144,9 @@ class Adafruit_SGP30:
         name, command, signals, delay = profile
         # pylint: enable=unused-variable
 
-        #print("\trunning profile: %s, command %s, %d, delay %0.02f" %
+        # print("\trunning profile: %s, command %s, %d, delay %0.02f" %
         #   (name, ["0x%02x" % i for i in command], signals, delay))
         return self._i2c_read_words_from_cmd(command, delay, signals)
-
 
     def _i2c_read_words_from_cmd(self, command, delay, reply_size):
         """Run an SGP command query, get a reply and CRC results if necessary"""
@@ -160,17 +155,17 @@ class Adafruit_SGP30:
             time.sleep(delay)
             if not reply_size:
                 return None
-            crc_result = bytearray(reply_size * (_SGP30_WORD_LEN +1))
+            crc_result = bytearray(reply_size * (_SGP30_WORD_LEN + 1))
             self._device.readinto(crc_result)
-            #print("\tRaw Read: ", crc_result)
+            # print("\tRaw Read: ", crc_result)
             result = []
             for i in range(reply_size):
-                word = [crc_result[3*i], crc_result[3*i+1]]
-                crc = crc_result[3*i+2]
+                word = [crc_result[3 * i], crc_result[3 * i + 1]]
+                crc = crc_result[3 * i + 2]
                 if self._generate_crc(word) != crc:
-                    raise RuntimeError('CRC Error')
+                    raise RuntimeError("CRC Error")
                 result.append(word[0] << 8 | word[1])
-            #print("\tOK Data: ", [hex(i) for i in result])
+            # print("\tOK Data: ", [hex(i) for i in result])
             return result
 
     # pylint: disable=no-self-use
