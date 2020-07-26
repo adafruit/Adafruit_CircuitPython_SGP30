@@ -100,6 +100,18 @@ class Adafruit_SGP30:
         """Carbon Dioxide Equivalent baseline value"""
         return self.get_iaq_baseline()[0]
 
+    @property
+    # pylint: disable=invalid-name
+    def Ethanol(self):
+        """Ethanol Raw Signal in ticks"""
+        return self.raw_measure()[1]
+
+    @property
+    # pylint: disable=invalid-name
+    def H2(self):
+        """H2 Raw Signal in ticks"""
+        return self.raw_measure()[0]
+
     def iaq_init(self):
         """Initialize the IAQ algorithm"""
         # name, command, signals, delay
@@ -109,6 +121,11 @@ class Adafruit_SGP30:
         """Measure the eCO2 and TVOC"""
         # name, command, signals, delay
         return self._run_profile(["iaq_measure", [0x20, 0x08], 2, 0.05])
+
+    def raw_measure(self):
+        """Measure H2 and Ethanol (Raw Signals)"""
+        # name, command, signals, delay
+        return self._run_profile(["raw_measure", [0x20, 0x50], 2, 0.025])
 
     def get_iaq_baseline(self):
         """Retreive the IAQ algorithm baseline for eCO2 and TVOC"""

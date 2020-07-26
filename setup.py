@@ -45,7 +45,7 @@ setup(
         "Programming Language :: Python :: 3.5",
     ],
     # What does your project relate to?
-    keywords="adafruit sensiron sgp30 gas sensor eco2 tvoc i2c hardware micropython circuitpython",
+    keywords="adafruit sensiron sgp30 gas sensor eco2 tvoc h2 ethanol i2c hardware micropython circuitpython",
     # You can just specify the packages manually here if your project is
     # simple. Or you can use find_packages().
     py_modules=["adafruit_sgp30"],
