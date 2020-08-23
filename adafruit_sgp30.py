@@ -49,14 +49,12 @@ __version__ = "0.0.0-auto.0"
 __repo__ = "https://github.com/adafruit/Adafruit_CircuitPython_SGP30.git"
 
 
-# pylint: disable=bad-whitespace
 _SGP30_DEFAULT_I2C_ADDR = const(0x58)
 _SGP30_FEATURESETS = (0x0020, 0x0022)
 
 _SGP30_CRC8_POLYNOMIAL = const(0x31)
 _SGP30_CRC8_INIT = const(0xFF)
 _SGP30_WORD_LEN = const(2)
-# pylint: enable=bad-whitespace
 
 
 class Adafruit_SGP30:
