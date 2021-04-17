@@ -20,7 +20,7 @@ Implementation Notes
 
 **Software and Dependencies:**
 
-* Adafruit CircuitPython firmware for the ESP8622 and M0-based boards:
+* Adafruit CircuitPython firmware for the supported boards:
   https://github.com/adafruit/circuitpython/releases
 * Adafruit's Bus Device library: https://github.com/adafruit/Adafruit_CircuitPython_BusDevice
 """
@@ -43,6 +43,40 @@ _SGP30_WORD_LEN = const(2)
 class Adafruit_SGP30:
     """
     A driver for the SGP30 gas sensor.
+
+    :param ~busio.I2C i2c: The I2C bus the SGP30 is connected to.
+    :param int address: The I2C address of the device. Defaults to :const:`0x58`
+
+
+    **Quickstart: Importing and using the SGP30 temperature sensor**
+
+        Here is one way of importing the `Adafruit_SGP30` class so you
+        can use it with the name ``sgp30``.
+        First you will need to import the libraries to use the sensor
+
+        .. code-block:: python
+
+            import busio
+            import board
+            import adafruit_sgp30
+
+        Once this is done you can define your `busio.I2C` object and define your sensor object
+
+        .. code-block:: python
+
+            i2c = busio.I2C(board.SCL, board.SDA, frequency=100000)
+            sgp30 = adafruit_sgp30.Adafruit_SGP30(i2c)
+
+        Now you have access to the Carbon Dioxide Equivalent baseline using the
+        :attr:`baseline_eCO2` attribute and the Total Volatile Organic Compound
+        baseline using the :attr:`baseline_TVOC`
+
+        .. code-block:: python
+
+            eCO2 = sgp30.baseline_eCO2
+            TVOC = sgp30.baseline_TVOC
+
+
     """
 
     def __init__(self, i2c, address=_SGP30_DEFAULT_I2C_ADDR):
