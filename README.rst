@@ -90,6 +90,11 @@ To read from the sensor:
     print("eCO2 = %d ppm \t TVOC = %d ppb" % (eCO2, TVOC))
 
 
+Documentation
+=============
+
+API documentation for this library can be found on `Read the Docs <https://circuitpython.readthedocs.io/projects/sgp30/en/latest/>`_.
+
 Contributing
 ============
 
