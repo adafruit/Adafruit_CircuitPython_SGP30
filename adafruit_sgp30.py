@@ -25,6 +25,7 @@ Implementation Notes
 * Adafruit's Bus Device library: https://github.com/adafruit/Adafruit_CircuitPython_BusDevice
 """
 import time
+from math import exp
 from adafruit_bus_device.i2c_device import I2CDevice
 from micropython import const
 
@@ -167,6 +168,20 @@ class Adafruit_SGP30:
             arr.append(self._generate_crc(arr))
             buffer += arr
         self._run_profile(["iaq_set_humidity", [0x20, 0x61] + buffer, 0, 0.01])
+
+    def set_iaq_relative_humidity(self, celcius, relative_humidity):
+        """
+        Set the humidity in g/m3 for eCo2 and TVOC compensation algorithm.
+        The absolute humidity is calculated from the temperature and relative
+        humidity (as a percentage).
+        """
+        numerator = ((relative_humidity / 100) * 6.112) * exp(
+            (17.62 * celcius) / (243.12 + celcius)
+        )
+        denominator = 273.15 + celcius
+
+        humidity_grams_pm3 = 216.7 * (numerator / denominator)
+        self.set_iaq_humidity(humidity_grams_pm3)
 
     # Low level command functions
 
