@@ -15,6 +15,10 @@ Introduction
     :target: https://github.com/adafruit/Adafruit_CircuitPython_SGP30/actions/
     :alt: Build Status
 
+.. image:: https://img.shields.io/badge/code%20style-black-000000.svg
+    :target: https://github.com/psf/black
+    :alt: Code Style: Black
+
 A CircuitPython driver for the Sensirion SGP30 gas sensor with eCO2 and TVOC output. This sensor uses I2C!
 
 Installation and Dependencies
