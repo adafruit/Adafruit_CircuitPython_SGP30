@@ -12,7 +12,7 @@ requires = [
 [project]
 name = "adafruit-circuitpython-sgp30"
 description = "CircuitPython library for Sensirion SGP30 gas sensor with eCO2 and TVOC."
-version = "0.0.0-auto.0"
+version = "0.0.0+auto.0"
 readme = "README.rst"
 authors = [
     {name = "Adafruit Industries", email = "circuitpython@adafruit.com"}
