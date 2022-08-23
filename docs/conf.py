@@ -45,8 +45,14 @@ master_doc = "index"
 
 # General information about the project.
 project = "Adafruit sgp30 Library"
+creation_year = "2017"
 current_year = str(datetime.datetime.now().year)
-copyright = current_year + " Ladyada"
+year_duration = (
+    current_year
+    if current_year == creation_year
+    else creation_year + " - " + current_year
+)
+copyright = year_duration + " Ladyada"
 author = "Ladyada"
 
 # The version info for the project you're documenting, acts as replacement for
