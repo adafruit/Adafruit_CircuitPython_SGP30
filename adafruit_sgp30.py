@@ -30,7 +30,7 @@ from adafruit_bus_device.i2c_device import I2CDevice
 from micropython import const
 
 try:
-    from typing import List
+    from typing import List, Tuple
     from busio import I2C
 except ImportError:
     pass
@@ -193,7 +193,7 @@ class Adafruit_SGP30:
 
     # Low level command functions
 
-    def _run_profile(self, profile: List[str, List[int], int, float]) -> List[int]:
+    def _run_profile(self, profile: Tuple[str, List[int], int, float]) -> List[int]:
         """Run an SGP 'profile' which is a named command set"""
         # pylint: disable=unused-variable
         name, command, signals, delay = profile
