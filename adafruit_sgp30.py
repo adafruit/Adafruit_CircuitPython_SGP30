@@ -137,22 +137,22 @@ class Adafruit_SGP30:
     def iaq_init(self) -> List[int]:
         """Initialize the IAQ algorithm"""
         # name, command, signals, delay
-        self._run_profile(["iaq_init", [0x20, 0x03], 0, 0.01])
+        self._run_profile(("iaq_init", [0x20, 0x03], 0, 0.01))
 
     def iaq_measure(self) -> List[int]:
         """Measure the eCO2 and TVOC"""
         # name, command, signals, delay
-        return self._run_profile(["iaq_measure", [0x20, 0x08], 2, 0.05])
+        return self._run_profile(("iaq_measure", [0x20, 0x08], 2, 0.05))
 
     def raw_measure(self) -> List[int]:
         """Measure H2 and Ethanol (Raw Signals)"""
         # name, command, signals, delay
-        return self._run_profile(["raw_measure", [0x20, 0x50], 2, 0.025])
+        return self._run_profile(("raw_measure", [0x20, 0x50], 2, 0.025))
 
     def get_iaq_baseline(self) -> List[int]:
         """Retreive the IAQ algorithm baseline for eCO2 and TVOC"""
         # name, command, signals, delay
-        return self._run_profile(["iaq_get_baseline", [0x20, 0x15], 2, 0.01])
+        return self._run_profile(("iaq_get_baseline", [0x20, 0x15], 2, 0.01))
 
     def set_iaq_baseline(  # pylint: disable=invalid-name
         self, eCO2: int, TVOC: int
@@ -165,7 +165,7 @@ class Adafruit_SGP30:
             arr = [value >> 8, value & 0xFF]
             arr.append(self._generate_crc(arr))
             buffer += arr
-        self._run_profile(["iaq_set_baseline", [0x20, 0x1E] + buffer, 0, 0.01])
+        self._run_profile(("iaq_set_baseline", [0x20, 0x1E] + buffer, 0, 0.01))
 
     def set_iaq_humidity(self, gramsPM3: float) -> None:  # pylint: disable=invalid-name
         """Set the humidity in g/m3 for eCO2 and TVOC compensation algorithm"""
@@ -175,7 +175,7 @@ class Adafruit_SGP30:
             arr = [value >> 8, value & 0xFF]
             arr.append(self._generate_crc(arr))
             buffer += arr
-        self._run_profile(["iaq_set_humidity", [0x20, 0x61] + buffer, 0, 0.01])
+        self._run_profile(("iaq_set_humidity", [0x20, 0x61] + buffer, 0, 0.01))
 
     def set_iaq_relative_humidity(self, celsius: float, relative_humidity: float):
         """
