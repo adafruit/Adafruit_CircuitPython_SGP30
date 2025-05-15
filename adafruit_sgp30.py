@@ -24,13 +24,16 @@ Implementation Notes
   https://github.com/adafruit/circuitpython/releases
 * Adafruit's Bus Device library: https://github.com/adafruit/Adafruit_CircuitPython_BusDevice
 """
+
 import time
 from math import exp
+
 from adafruit_bus_device.i2c_device import I2CDevice
 from micropython import const
 
 try:
     from typing import List, Tuple
+
     from busio import I2C
 except ImportError:
     pass
@@ -99,37 +102,31 @@ class Adafruit_SGP30:
         self.iaq_init()
 
     @property
-    # pylint: disable=invalid-name
     def TVOC(self) -> int:
         """Total Volatile Organic Compound in parts per billion."""
         return self.iaq_measure()[1]
 
     @property
-    # pylint: disable=invalid-name
     def baseline_TVOC(self) -> int:
         """Total Volatile Organic Compound baseline value"""
         return self.get_iaq_baseline()[1]
 
     @property
-    # pylint: disable=invalid-name
     def eCO2(self) -> int:
         """Carbon Dioxide Equivalent in parts per million"""
         return self.iaq_measure()[0]
 
     @property
-    # pylint: disable=invalid-name
     def baseline_eCO2(self) -> int:
         """Carbon Dioxide Equivalent baseline value"""
         return self.get_iaq_baseline()[0]
 
     @property
-    # pylint: disable=invalid-name
     def Ethanol(self) -> int:
         """Ethanol Raw Signal in ticks"""
         return self.raw_measure()[1]
 
     @property
-    # pylint: disable=invalid-name
     def H2(self) -> int:
         """H2 Raw Signal in ticks"""
         return self.raw_measure()[0]
@@ -154,9 +151,7 @@ class Adafruit_SGP30:
         # name, command, signals, delay
         return self._run_profile(("iaq_get_baseline", [0x20, 0x15], 2, 0.01))
 
-    def set_iaq_baseline(  # pylint: disable=invalid-name
-        self, eCO2: int, TVOC: int
-    ) -> None:
+    def set_iaq_baseline(self, eCO2: int, TVOC: int) -> None:
         """Set the previously recorded IAQ algorithm baseline for eCO2 and TVOC"""
         if eCO2 == 0 and TVOC == 0:
             raise RuntimeError("Invalid baseline")
@@ -167,7 +162,7 @@ class Adafruit_SGP30:
             buffer += arr
         self._run_profile(("iaq_set_baseline", [0x20, 0x1E] + buffer, 0, 0.01))
 
-    def set_iaq_humidity(self, gramsPM3: float) -> None:  # pylint: disable=invalid-name
+    def set_iaq_humidity(self, gramsPM3: float) -> None:
         """Set the humidity in g/m3 for eCO2 and TVOC compensation algorithm"""
         tmp = int(gramsPM3 * 256)
         buffer = []
@@ -195,9 +190,7 @@ class Adafruit_SGP30:
 
     def _run_profile(self, profile: Tuple[str, List[int], int, float]) -> List[int]:
         """Run an SGP 'profile' which is a named command set"""
-        # pylint: disable=unused-variable
-        name, command, signals, delay = profile
-        # pylint: enable=unused-variable
+        name, command, signals, delay = profile  # noqa: F841
 
         # print("\trunning profile: %s, command %s, %d, delay %0.02f" %
         #   (name, ["0x%02x" % i for i in command], signals, delay))
@@ -225,8 +218,7 @@ class Adafruit_SGP30:
             # print("\tOK Data: ", [hex(i) for i in result])
             return result
 
-    # pylint: disable=no-self-use
-    def _generate_crc(self, data: bytearray) -> int:
+    def _generate_crc(self, data: bytearray) -> int:  # noqa: PLR6301
         """8-bit CRC algorithm for checking data"""
         crc = _SGP30_CRC8_INIT
         # calculates 8-Bit checksum with given polynomial
